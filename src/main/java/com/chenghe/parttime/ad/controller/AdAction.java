@@ -31,11 +31,11 @@ public class AdAction {
         @Path(value = "/queryAdList")
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "根据广告分类查询广告", notes = "", author = "更新于 2019-07-22")
-//        @ApiResponses(value = {
-//                @ApiResponse(code = "0000", message = "请求成功", response = QueryUserResponse.class),
-//                @ApiResponse(code = "0001", message = "用户不存在", response = QueryUserResponse.class)
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = AdResPonse.class),
+                @ApiResponse(code = "0001", message = "失败", response = AdResPonse.class)
 
-//        })
+        })
         public String queryAdList(@ApiParam(value = "分类id", required = true) @QueryParam("categoryId") String categoryId){
                 JSONObject json = new JSONObject();
 
