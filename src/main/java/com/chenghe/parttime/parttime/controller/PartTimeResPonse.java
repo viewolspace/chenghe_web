@@ -14,6 +14,9 @@ public class PartTimeResPonse {
     @ApiModelProperty("返回消息")
     private String message;
 
+    @ApiModelProperty("0 未报名  1 已报名")
+    private String isJoin;
+
     @ApiModelProperty("兼职内容")
     private PartTimeVo result;
 

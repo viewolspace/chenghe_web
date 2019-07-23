@@ -3,7 +3,9 @@ package com.chenghe.parttime.parttime.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.PartTime;
 import com.chenghe.parttime.pojo.User;
+import com.chenghe.parttime.pojo.UserJoin;
 import com.chenghe.parttime.service.IPartTimeService;
+import com.chenghe.parttime.service.IUserJoinService;
 import com.chenghe.parttime.service.IUserService;
 import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ import java.util.List;
 public class PartTimeAction {
         @Resource
         private IPartTimeService partTimeService;
+
+        @Resource
+        private IUserJoinService userJoinService;
 
         @Resource
         private IUserService userService;
@@ -101,6 +106,17 @@ public class PartTimeAction {
                 json.put("message","ok");
 
                 PartTime partTime  = partTimeService.getAndStatPartTime(id,userId,"");
+
+                int isJoin = 0; //未报名
+
+                if(userId > 0){
+                        UserJoin us = userJoinService.getUserJoin(userId, id, 1);
+                        if(us!=null){
+                                isJoin = 1;
+                        }
+                }
+
+                json.put("isJoin",isJoin);
 
                 json.put("result",partTime);
 
