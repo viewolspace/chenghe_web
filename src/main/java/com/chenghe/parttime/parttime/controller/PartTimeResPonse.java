@@ -43,4 +43,12 @@ public class PartTimeResPonse {
     public void setResult(PartTimeVo result) {
         this.result = result;
     }
+
+    public String getIsJoin() {
+        return isJoin;
+    }
+
+    public void setIsJoin(String isJoin) {
+        this.isJoin = isJoin;
+    }
 }
