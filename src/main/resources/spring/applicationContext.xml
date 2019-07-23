@@ -7,6 +7,6 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <context:annotation-config/>
-    <context:component-scan base-package="com.icome"/>
+    <context:component-scan base-package="com.chenghe"/>
 
 </beans>

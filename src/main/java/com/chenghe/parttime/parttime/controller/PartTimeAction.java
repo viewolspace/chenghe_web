@@ -2,15 +2,14 @@ package com.chenghe.parttime.parttime.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.PartTime;
+import com.chenghe.parttime.pojo.User;
 import com.chenghe.parttime.service.IPartTimeService;
+import com.chenghe.parttime.service.IUserService;
 import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import java.util.List;
 
 /**
@@ -27,15 +26,18 @@ import java.util.List;
 public class PartTimeAction {
         @Resource
         private IPartTimeService partTimeService;
+
+        @Resource
+        private IUserService userService;
         @GET
         @Path(value = "/queryRecommnet")
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "查询热门或者今日精选", notes = "", author = "更新于 2019-07-22")
-//        @ApiResponses(value = {
-//                @ApiResponse(code = "0000", message = "请求成功", response = QueryUserResponse.class),
-//                @ApiResponse(code = "0001", message = "用户不存在", response = QueryUserResponse.class)
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
 
-//        })
+        })
         public String queryRecommnet(@ApiParam(value = " 1 热门 2 精选", required = true) @QueryParam("recomment") int recomment,
                                      @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                                      @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize){
@@ -58,11 +60,11 @@ public class PartTimeAction {
         @Path(value = "/queryAll")
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "查询全部 或者 搜索", notes = "", author = "更新于 2019-07-22")
-//        @ApiResponses(value = {
-//                @ApiResponse(code = "0000", message = "请求成功", response = QueryUserResponse.class),
-//                @ApiResponse(code = "0001", message = "用户不存在", response = QueryUserResponse.class)
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
 
-//        })
+        })
         public String queryAll(@ApiParam(value = "关键词，可以不传", required = false) @QueryParam("keyWord") String keyWord,
                                      @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                                      @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize){
@@ -84,23 +86,79 @@ public class PartTimeAction {
         @Path(value = "/getPartTime")
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "职位详情", notes = "", author = "更新于 2019-07-22")
-//        @ApiResponses(value = {
-//                @ApiResponse(code = "0000", message = "请求成功", response = QueryUserResponse.class),
-//                @ApiResponse(code = "0001", message = "用户不存在", response = QueryUserResponse.class)
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeResPonse.class)
 
-//        })
+        })
         public String getPartTime(
-                               @ApiParam(value = "id", required = true) @QueryParam("id") int id){
+                               @ApiParam(value = "id", required = true) @QueryParam("id") int id,
+                               @ApiParam(value = "userId", defaultValue = "1", required = true) @HeaderParam("userId")  @DefaultValue("0") int userId){
                 JSONObject json = new JSONObject();
 
                 json.put("status","0000");
 
                 json.put("message","ok");
 
-                PartTime partTime  = partTimeService.getPartTime(id);
+                PartTime partTime  = partTimeService.getAndStatPartTime(id,userId,"");
 
                 json.put("result",partTime);
 
+                return json.toJSONString();
+        }
+
+
+
+        @GET
+        @Path(value = "/copyPartTime")
+        @Produces("text/html;charset=UTF-8")
+        @ApiOperation(value = "拷贝职位qq等", notes = "", author = "更新于 2019-07-22")
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeResPonse.class)
+
+        })
+        public String copyPartTime(
+                @ApiParam(value = "id", required = true) @QueryParam("id") int id,
+                @ApiParam(value = "userId", defaultValue = "0", required = true) @HeaderParam("userId")  @DefaultValue("0") int userId){
+                JSONObject json = new JSONObject();
+
+                json.put("status","0000");
+
+                json.put("message","ok");
+
+                User user = userService.getUser(userId);
+
+                if(user!=null){
+                        partTimeService.copyPartTime(userId,id);
+                }
+                return json.toJSONString();
+        }
+
+
+        @GET
+        @Path(value = "/joinPartTime")
+        @Produces("text/html;charset=UTF-8")
+        @ApiOperation(value = "报名", notes = "", author = "更新于 2019-07-22")
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeResPonse.class)
+
+        })
+        public String joinPartTime(
+                @ApiParam(value = "id", required = true) @QueryParam("id") int id,
+                @ApiParam(value = "userId", defaultValue = "0", required = true) @HeaderParam("userId")  @DefaultValue("0") int userId){
+                JSONObject json = new JSONObject();
+
+                json.put("status","0000");
+
+                json.put("message","ok");
+
+                User user = userService.getUser(userId);
+
+                if(user!=null){
+                        partTimeService.joinPartTime(userId,id);
+                }
                 return json.toJSONString();
         }
 }

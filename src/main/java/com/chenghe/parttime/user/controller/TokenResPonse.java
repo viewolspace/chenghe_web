@@ -1,4 +1,4 @@
-package com.chenghe.parttime.parttime.controller;
+package com.chenghe.parttime.user.controller;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,15 +7,15 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by lenovo on 2019/7/22.
  */
 @ApiModel
-public class PartTimeResPonse {
+public class TokenResPonse {
     @ApiModelProperty("status")
     private String status;
 
     @ApiModelProperty("返回消息")
     private String message;
 
-    @ApiModelProperty("兼职内容")
-    private PartTimeVo result;
+    @ApiModelProperty("token")
+    private String token;
 
     public String getStatus() {
         return status;
@@ -33,11 +33,11 @@ public class PartTimeResPonse {
         this.message = message;
     }
 
-    public PartTimeVo getResult() {
-        return result;
+    public String getToken() {
+        return token;
     }
 
-    public void setResult(PartTimeVo result) {
-        this.result = result;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

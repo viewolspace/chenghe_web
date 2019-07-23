@@ -3,19 +3,21 @@ package com.chenghe.parttime.parttime.controller;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * Created by lenovo on 2019/7/22.
  */
 @ApiModel
-public class PartTimeResPonse {
+public class PartTimeListResPonse {
     @ApiModelProperty("status")
     private String status;
 
     @ApiModelProperty("返回消息")
     private String message;
 
-    @ApiModelProperty("兼职内容")
-    private PartTimeVo result;
+    @ApiModelProperty("兼职列表")
+    private List<PartTimeVo> result;
 
     public String getStatus() {
         return status;
@@ -33,11 +35,11 @@ public class PartTimeResPonse {
         this.message = message;
     }
 
-    public PartTimeVo getResult() {
+    public List<PartTimeVo> getResult() {
         return result;
     }
 
-    public void setResult(PartTimeVo result) {
+    public void setResult(List<PartTimeVo> result) {
         this.result = result;
     }
 }

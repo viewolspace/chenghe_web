@@ -33,7 +33,7 @@
 
     <context-param>
         <param-name>javax.ws.rs.core.Application</param-name>
-        <param-value>com.icome.web.swagger.RestApplication</param-value>
+        <param-value>com.chenghe.parttime.swagger.RestApplication</param-value>
     </context-param>
 
     <filter>
