@@ -177,4 +177,34 @@ public class PartTimeAction {
                 }
                 return json.toJSONString();
         }
+
+
+        @GET
+        @Path(value = "/queryMyPartTime")
+        @Produces("text/html;charset=UTF-8")
+        @ApiOperation(value = "查询我报名的兼职", notes = "", author = "更新于 2019-07-22")
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
+
+        })
+        public String queryMyPartTime(@ApiParam(value = "用户id", required = true) @HeaderParam("userId") int userId,
+                                     @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
+                                     @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize){
+                JSONObject json = new JSONObject();
+
+                json.put("status","0000");
+
+                json.put("message","ok");
+
+                if(userId <=0){
+                    return json.toJSONString();
+                }
+
+                List<PartTime> list  = partTimeService.listMyjoin(userId, pageIndex, pageSize);
+
+                json.put("result",list);
+
+                return json.toJSONString();
+        }
 }
