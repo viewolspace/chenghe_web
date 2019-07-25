@@ -121,8 +121,8 @@ public class UserAction {
     @Produces("text/html;charset=UTF-8")
     @ApiOperation(value = "手机号验证码登录", notes = "", author = "更新于 2019-07-22")
     @ApiResponses(value = {
-            @ApiResponse(code = "0000", message = "请求成功", response = PhoneResPonse.class),
-            @ApiResponse(code = "0001", message = "失败", response = PhoneResPonse.class)
+            @ApiResponse(code = "0000", message = "请求成功", response = UserResPonse.class),
+            @ApiResponse(code = "0001", message = "失败")
 
     })
     public String login(@ApiParam(value = "手机号码", required = true) @QueryParam("phone") String phone,
@@ -176,8 +176,8 @@ public class UserAction {
     @Produces("text/html;charset=UTF-8")
     @ApiOperation(value = "手机号验证码登录", notes = "", author = "更新于 2019-07-22")
     @ApiResponses(value = {
-            @ApiResponse(code = "0000", message = "请求成功", response = PhoneResPonse.class),
-            @ApiResponse(code = "0001", message = "失败", response = PhoneResPonse.class)
+            @ApiResponse(code = "0000", message = "请求成功", response = UserResPonse.class),
+            @ApiResponse(code = "0001", message = "失败")
 
     })
     public String getUser(@ApiParam(value = "userId", required = true) @HeaderParam("userId") int userId){
@@ -214,7 +214,7 @@ public class UserAction {
     })
     public String updateUser(@ApiParam(value = "图片base64", required = true) @FormParam("imgStr") String imgStr,
                         @ApiParam(value = "性别", required = true) @FormParam("sex") int sex,
-                        @ApiParam(value = "出生日期", required = true) @FormParam("birthday") String birthday,
+                        @ApiParam(value = "出生日期 格式 yyyy.mm.dd", required = true) @FormParam("birthday") String birthday,
                         @ApiParam(value = "工作经验", required = true) @FormParam("exp") String exp,
                         @ApiParam(value = "自我介绍", required = true) @FormParam("des") String des,
                         @ApiParam(value = "userId", required = true) @HeaderParam("userId") int userId){

@@ -130,8 +130,8 @@ public class PartTimeAction {
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "拷贝职位qq等", notes = "", author = "更新于 2019-07-22")
         @ApiResponses(value = {
-                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeResPonse.class),
-                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeResPonse.class)
+                @ApiResponse(code = "0000", message = "请求成功"),
+                @ApiResponse(code = "0001", message = "请求失败")
 
         })
         public String copyPartTime(
@@ -157,8 +157,8 @@ public class PartTimeAction {
         @Produces("text/html;charset=UTF-8")
         @ApiOperation(value = "报名", notes = "", author = "更新于 2019-07-22")
         @ApiResponses(value = {
-                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeResPonse.class),
-                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeResPonse.class)
+                @ApiResponse(code = "0000", message = "请求成功"),
+                @ApiResponse(code = "0001", message = "请求失败")
 
         })
         public String joinPartTime(
