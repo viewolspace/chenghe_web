@@ -44,7 +44,7 @@ public class UserResPonse {
     }
 
     @ApiModel
-    class UserVo{
+    class UserVo {
         @ApiModelProperty("userId")
         private Integer userId;
 
