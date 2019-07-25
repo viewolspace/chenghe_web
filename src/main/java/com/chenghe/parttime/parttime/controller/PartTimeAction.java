@@ -43,7 +43,7 @@ public class PartTimeAction {
                 @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
 
         })
-        public String queryRecommnet(@ApiParam(value = " 1 热门 2 精选", required = true) @QueryParam("recomment") int recomment,
+        public String queryRecommnet(@ApiParam(value = " 1 热门 2 精选", required = true) @QueryParam("recommend") int recommend,
                                      @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                                      @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize){
                 JSONObject json = new JSONObject();
@@ -52,7 +52,7 @@ public class PartTimeAction {
 
                 json.put("message","ok");
 
-                List<PartTime> list  = partTimeService.listRecomment(recomment, pageIndex, pageSize);
+                List<PartTime> list  = partTimeService.listRecommend(recommend, pageIndex, pageSize);
 
                 json.put("result",list);
 

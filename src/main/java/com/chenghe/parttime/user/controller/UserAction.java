@@ -6,6 +6,7 @@ package com.chenghe.parttime.user.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.User;
+import com.chenghe.parttime.service.IIdfaService;
 import com.chenghe.parttime.service.IUserService;
 import com.chenghe.parttime.util.LruCache;
 import com.youguu.core.util.PropertiesUtil;
@@ -40,6 +41,9 @@ public class UserAction {
 
     @Resource
     private IUserService userService;
+
+    @Resource
+    private IIdfaService iIdfaService;
 
 
     @GET
@@ -343,6 +347,30 @@ public class UserAction {
 
         json.put("message","ok");
 
+
+        return json.toJSONString();
+    }
+
+
+
+    @GET
+    @Path(value = "/active")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "首次激活调用", notes = "", author = "更新于 2019-07-22")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = TokenResPonse.class),
+            @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
+
+    })
+    public String active(@ApiParam(value = "idfa", required = true) @QueryParam("idfa") String idfa,
+                         @ApiParam(value = "操作系统 1 IOS  2 Android", required = true) @QueryParam("os") String os){
+        JSONObject json = new JSONObject();
+
+        json.put("status","0000");
+
+        json.put("message","ok");
+
+        iIdfaService.addIdfa(idfa,os);
 
         return json.toJSONString();
     }
