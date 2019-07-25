@@ -35,7 +35,13 @@ public class UserResPonse {
         this.message = message;
     }
 
+    public UserVo getResult() {
+        return result;
+    }
 
+    public void setResult(UserVo result) {
+        this.result = result;
+    }
 
     @ApiModel
     class UserVo{

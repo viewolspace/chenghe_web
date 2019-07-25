@@ -358,8 +358,8 @@ public class UserAction {
     @Produces("text/html;charset=UTF-8")
     @ApiOperation(value = "首次激活调用", notes = "", author = "更新于 2019-07-22")
     @ApiResponses(value = {
-            @ApiResponse(code = "0000", message = "请求成功", response = TokenResPonse.class),
-            @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
+            @ApiResponse(code = "0000", message = "请求成功"),
+            @ApiResponse(code = "0001", message = "失败")
 
     })
     public String active(@ApiParam(value = "idfa", required = true) @QueryParam("idfa") String idfa,
