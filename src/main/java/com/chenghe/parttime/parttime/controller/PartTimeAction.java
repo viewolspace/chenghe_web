@@ -1,9 +1,11 @@
 package com.chenghe.parttime.parttime.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chenghe.parttime.pojo.Category;
 import com.chenghe.parttime.pojo.PartTime;
 import com.chenghe.parttime.pojo.User;
 import com.chenghe.parttime.pojo.UserJoin;
+import com.chenghe.parttime.service.ICategoryService;
 import com.chenghe.parttime.service.IPartTimeService;
 import com.chenghe.parttime.service.IUserJoinService;
 import com.chenghe.parttime.service.IUserService;
@@ -33,6 +35,9 @@ public class PartTimeAction {
         private IUserJoinService userJoinService;
 
         @Resource
+        private ICategoryService categoryService;
+
+        @Resource
         private IUserService userService;
         @GET
         @Path(value = "/queryRecommnet")
@@ -55,6 +60,37 @@ public class PartTimeAction {
                 List<PartTime> list  = partTimeService.listRecommend(recommend, pageIndex, pageSize);
 
                 json.put("result",list);
+
+                return json.toJSONString();
+        }
+
+
+
+        @GET
+        @Path(value = "/queryBycategoryId")
+        @Produces("text/html;charset=UTF-8")
+        @ApiOperation(value = "查询分类下的兼职列表", notes = "", author = "更新于 2019-07-22")
+        @ApiResponses(value = {
+                @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+                @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
+
+        })
+        public String queryBycategoryId(@ApiParam(value = "分类id", required = true) @QueryParam("categoryId") String categoryId,
+                                     @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
+                                     @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize){
+                JSONObject json = new JSONObject();
+
+                json.put("status","0000");
+
+                json.put("message","ok");
+
+                Category category = categoryService.getCategory(categoryId);
+
+                List<PartTime> list  = partTimeService.listByCategory(categoryId, pageIndex, pageSize);
+
+                json.put("result",list);
+
+                json.put("category",category);
 
                 return json.toJSONString();
         }

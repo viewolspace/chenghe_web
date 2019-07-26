@@ -19,6 +19,9 @@ public class PartTimeListResPonse {
     @ApiModelProperty("兼职列表")
     private List<PartTimeVo> result;
 
+    @ApiModelProperty("分类信息")
+    private CategoryVo category;
+
     public String getStatus() {
         return status;
     }
@@ -41,5 +44,13 @@ public class PartTimeListResPonse {
 
     public void setResult(List<PartTimeVo> result) {
         this.result = result;
+    }
+
+    public CategoryVo getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryVo category) {
+        this.category = category;
     }
 }
