@@ -58,6 +58,9 @@ public class PartTimeVo {
     @ApiModelProperty("工作地点")
     private String workAddress;
 
+    @ApiModelProperty("宣传图片")
+    private String pic;
+
     private Integer status;
 
     private Date sTime;
