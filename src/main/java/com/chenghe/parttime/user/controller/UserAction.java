@@ -235,8 +235,8 @@ public class UserAction {
 
         if (user == null) {
             json.put("status", "0001");
-
             json.put("message", "用户不存在");
+            return json.toJSONString();
         }
 
         String headPath = this.picHandler(userId, imgStr);
