@@ -224,10 +224,10 @@ public class UserAction {
     })
     public String updateUser(@ApiParam(value = "图片base64", required = true) @FormParam("imgStr") String imgStr,
                              @ApiParam(value = "性别", required = true) @FormParam("sex") int sex,
-                             @ApiParam(value = "出生日期 格式 yyyy.mm.dd", required = true) @FormParam("birthday") String birthday,
+                             @ApiParam(value = "出生日期 格式 yyyy.MM.dd", required = true) @FormParam("birthday") String birthday,
                              @ApiParam(value = "工作经验", required = true) @FormParam("exp") String exp,
                              @ApiParam(value = "自我介绍", required = true) @FormParam("des") String des,
-                             @ApiParam(value = "userId", required = true) @HeaderParam("userId") int userId) {
+                             @ApiParam(value = "用户ID", required = true) @HeaderParam("userId") int userId) {
 
         JSONObject json = new JSONObject();
 
