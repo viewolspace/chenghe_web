@@ -194,22 +194,46 @@ public class UserAction {
     })
     public String getUser(@ApiParam(value = "userId", required = true) @HeaderParam("userId") int userId) {
 
-        JSONObject json = new JSONObject();
+        UserResPonse resPonse = new UserResPonse();
 
-        User user = userService.getUser(userId);
+        try {
+            User user = userService.getUser(userId);
 
-        json.put("status", "0000");
+            if (user == null) {
+                resPonse.setStatus("0001");
+                resPonse.setMessage("用户不存在");
+                return JSONObject.toJSONString(resPonse);
+            }
 
-        json.put("message", "ok");
+            resPonse.setStatus("0000");
+            resPonse.setMessage("ok");
+            UUID uuid = UUID.randomUUID();
+            resPonse.setSessionId(uuid.toString());
 
-        UUID uuid = UUID.randomUUID();
+            UserResPonse.UserVo userVo = new UserResPonse.UserVo();
+            userVo.setUserId(user.getUserId());
+            userVo.setPhone(user.getPhone());
+            userVo.setPwd(user.getPwd());
+            userVo.setNickName(user.getNickName());
+            userVo.setIdfa(user.getIdfa());
+            userVo.setHeadPic(user.getHeadPic());
+            userVo.setcTime(user.getcTime());
+            userVo.setmTime(user.getmTime());
+            userVo.setRealName(user.getRealName());
+            userVo.setSex(user.getSex());
+            userVo.setExp(user.getExp());
+            userVo.setDes(user.getDes());
 
-        json.put("sessionId", uuid.toString());
+            SimpleDateFormat dft = new SimpleDateFormat("yyyy.MM.dd");
+            userVo.setBirthday(dft.format(user.getBirthday()));
 
-        json.put("result", user);
-
-
-        return json.toJSONString();
+            resPonse.setResult(userVo);
+        } catch (Exception e) {
+            resPonse.setStatus("0002");
+            resPonse.setMessage("系统异常");
+            e.printStackTrace();
+        }
+        return JSONObject.toJSONString(resPonse);
     }
 
 
@@ -225,10 +249,10 @@ public class UserAction {
     public String updateUser(@ApiParam(value = "图片base64", required = true) @FormParam("imgStr") String imgStr,
                              @ApiParam(value = "姓名", required = true) @FormParam("realName") String realName,
                              @ApiParam(value = "性别", required = true) @FormParam("sex") int sex,
-                             @ApiParam(value = "出生日期 格式 yyyy.mm.dd", required = true) @FormParam("birthday") String birthday,
+                             @ApiParam(value = "出生日期 格式 yyyy.MM.dd", required = true) @FormParam("birthday") String birthday,
                              @ApiParam(value = "工作经验", required = true) @FormParam("exp") String exp,
                              @ApiParam(value = "自我介绍", required = true) @FormParam("des") String des,
-                             @ApiParam(value = "userId", required = true) @HeaderParam("userId") int userId) {
+                             @ApiParam(value = "用户ID", required = true) @HeaderParam("userId") int userId) {
 
         JSONObject json = new JSONObject();
 
@@ -236,8 +260,8 @@ public class UserAction {
 
         if (user == null) {
             json.put("status", "0001");
-
             json.put("message", "用户不存在");
+            return json.toJSONString();
         }
 
         String headPath = this.picHandler(userId, imgStr);

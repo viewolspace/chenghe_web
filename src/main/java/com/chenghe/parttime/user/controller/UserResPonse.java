@@ -16,6 +16,8 @@ public class UserResPonse {
     @ApiModelProperty("返回消息")
     private String message;
 
+    private String sessionId;
+
     @ApiModelProperty("result")
     private UserVo result;
 
@@ -35,6 +37,14 @@ public class UserResPonse {
         this.message = message;
     }
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public UserVo getResult() {
         return result;
     }
@@ -44,13 +54,12 @@ public class UserResPonse {
     }
 
     @ApiModel
-    class UserVo {
+    static class UserVo {
         @ApiModelProperty("userId")
         private Integer userId;
 
         @ApiModelProperty("手机")
         private String phone;
-
 
         private String pwd;
 
@@ -69,8 +78,8 @@ public class UserResPonse {
         @ApiModelProperty("性别 1 男  2 女")
         private int sex;
 
-        @ApiModelProperty("生日")
-        private Date birthday;
+        @ApiModelProperty("生日, yyyy.MM.dd")
+        private String birthday;
 
         @ApiModelProperty("工作经验")
         private String exp;
@@ -158,11 +167,11 @@ public class UserResPonse {
             this.sex = sex;
         }
 
-        public Date getBirthday() {
+        public String getBirthday() {
             return birthday;
         }
 
-        public void setBirthday(Date birthday) {
+        public void setBirthday(String birthday) {
             this.birthday = birthday;
         }
 
