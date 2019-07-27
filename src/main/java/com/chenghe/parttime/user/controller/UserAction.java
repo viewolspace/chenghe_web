@@ -217,7 +217,15 @@ public class UserAction {
             userVo.setPwd(user.getPwd());
             userVo.setNickName(user.getNickName());
             userVo.setIdfa(user.getIdfa());
-            userVo.setHeadPic(user.getHeadPic());
+            Properties properties = null;
+            try {
+                properties = PropertiesUtil.getProperties("properties/config.properties");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String imageUrl = properties.getProperty("imageUrl");
+
+            userVo.setHeadPic(imageUrl + File.separator + user.getHeadPic());
             userVo.setcTime(user.getcTime());
             userVo.setmTime(user.getmTime());
             userVo.setRealName(user.getRealName());
@@ -225,7 +233,7 @@ public class UserAction {
             userVo.setExp(user.getExp());
             userVo.setDes(user.getDes());
 
-            if(!StringUtils.isEmpty(user.getBirthday())){
+            if (!StringUtils.isEmpty(user.getBirthday())) {
                 SimpleDateFormat dft = new SimpleDateFormat("yyyy.MM.dd");
                 userVo.setBirthday(dft.format(user.getBirthday()));
             } else {
@@ -314,7 +322,7 @@ public class UserAction {
 
         String savePath = rootPath + "userHead/" + a + "/" + userId + ".ipg";
         File file = new File(savePath);
-        if(!file.exists()){
+        if (!file.exists()) {
             file.mkdirs();
         }
         String webPath = "/userHead/" + a + "/" + userId + ".ipg";
