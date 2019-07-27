@@ -223,6 +223,7 @@ public class UserAction {
 
     })
     public String updateUser(@ApiParam(value = "图片base64", required = true) @FormParam("imgStr") String imgStr,
+                             @ApiParam(value = "姓名", required = true) @FormParam("realName") String realName,
                              @ApiParam(value = "性别", required = true) @FormParam("sex") int sex,
                              @ApiParam(value = "出生日期 格式 yyyy.mm.dd", required = true) @FormParam("birthday") String birthday,
                              @ApiParam(value = "工作经验", required = true) @FormParam("exp") String exp,
@@ -247,6 +248,8 @@ public class UserAction {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 
         user.setSex(sex);
+
+        user.setRealName(realName);
 
         try {
             user.setBirthday(sdf.parse(birthday));
@@ -281,6 +284,10 @@ public class UserAction {
         String rootPath = properties.getProperty("img.path");
 
         String savePath = rootPath + "userHead/" + a + "/" + userId + ".ipg";
+        File file = new File(savePath);
+        if(!file.exists()){
+            file.mkdirs();
+        }
         String webPath = "/userHead/" + a + "/" + userId + ".ipg";
 
         if (imgStr == null || "".equals(imgStr)) {
