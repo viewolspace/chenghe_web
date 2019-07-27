@@ -20,6 +20,9 @@ public class PartTimeResPonse {
     @ApiModelProperty("兼职内容")
     private PartTimeVo result;
 
+    @ApiModelProperty("公司信息")
+    private CompanyVo company;
+
     public String getStatus() {
         return status;
     }
@@ -50,5 +53,13 @@ public class PartTimeResPonse {
 
     public void setIsJoin(String isJoin) {
         this.isJoin = isJoin;
+    }
+
+    public CompanyVo getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyVo company) {
+        this.company = company;
     }
 }

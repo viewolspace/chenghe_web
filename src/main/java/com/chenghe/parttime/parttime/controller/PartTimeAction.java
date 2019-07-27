@@ -2,10 +2,12 @@ package com.chenghe.parttime.parttime.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.Category;
+import com.chenghe.parttime.pojo.Company;
 import com.chenghe.parttime.pojo.PartTime;
 import com.chenghe.parttime.pojo.User;
 import com.chenghe.parttime.pojo.UserJoin;
 import com.chenghe.parttime.service.ICategoryService;
+import com.chenghe.parttime.service.ICompanyService;
 import com.chenghe.parttime.service.IPartTimeService;
 import com.chenghe.parttime.service.IUserJoinService;
 import com.chenghe.parttime.service.IUserService;
@@ -41,15 +43,14 @@ import java.util.List;
 public class PartTimeAction {
     @Resource
     private IPartTimeService partTimeService;
-
     @Resource
     private IUserJoinService userJoinService;
-
     @Resource
     private ICategoryService categoryService;
-
     @Resource
     private IUserService userService;
+    @Resource
+    private ICompanyService companyService;
 
     @GET
     @Path(value = "/queryRecommnet")
@@ -165,6 +166,23 @@ public class PartTimeAction {
         json.put("isJoin", isJoin);
 
         json.put("result", partTime);
+
+        /**
+         * 公司信息返回
+         */
+        Company company = companyService.getCompany(partTime.getCompanyId());
+        CompanyVo companyVo = new CompanyVo();
+        if (null != company) {
+            companyVo.setId(company.getId());
+            companyVo.setDes(company.getDes());
+            companyVo.setLogo(company.getLogo());
+            companyVo.setName(company.getName());
+            companyVo.setPhone(company.getPhone());
+            companyVo.setQq(company.getQq());
+            companyVo.setWx(company.getWx());
+            companyVo.setStar(company.getStar());
+        }
+        json.put("company", companyVo);
 
         return json.toJSONString();
     }
