@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Decoder;
 
 import javax.annotation.Resource;
@@ -224,8 +225,12 @@ public class UserAction {
             userVo.setExp(user.getExp());
             userVo.setDes(user.getDes());
 
-            SimpleDateFormat dft = new SimpleDateFormat("yyyy.MM.dd");
-            userVo.setBirthday(dft.format(user.getBirthday()));
+            if(!StringUtils.isEmpty(user.getBirthday())){
+                SimpleDateFormat dft = new SimpleDateFormat("yyyy.MM.dd");
+                userVo.setBirthday(dft.format(user.getBirthday()));
+            } else {
+                userVo.setBirthday("");
+            }
 
             resPonse.setResult(userVo);
         } catch (Exception e) {
