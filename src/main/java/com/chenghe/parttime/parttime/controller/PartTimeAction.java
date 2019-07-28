@@ -145,7 +145,7 @@ public class PartTimeAction {
     })
     public String getPartTime(
             @ApiParam(value = "id", required = true) @QueryParam("id") int id,
-            @ApiParam(value = "userId", defaultValue = "1", required = true) @HeaderParam("userId") @DefaultValue("0") int userId) {
+            @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
