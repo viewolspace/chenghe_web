@@ -177,6 +177,16 @@ public class UserAction {
 
         json.put("sessionId", uuid.toString());
 
+        Properties properties = null;
+        try {
+            properties = PropertiesUtil.getProperties("properties/config.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String imageUrl = properties.getProperty("imageUrl");
+
+        user.setHeadPic(imageUrl + File.separator + user.getHeadPic());
+
         json.put("result", user);
 
 
