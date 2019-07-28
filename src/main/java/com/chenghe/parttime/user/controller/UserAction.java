@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -290,6 +291,7 @@ public class UserAction {
         String headPath = this.picHandler(userId, imgStr);
 
         if (headPath != null && !headPath.equals("")) {
+            headPath = headPath + "?rand=" + new Date().getTime();
             user.setHeadPic(headPath);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
