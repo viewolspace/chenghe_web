@@ -15,10 +15,10 @@ public class LruCache {
 
     public LruCache(int size){
         maxSize = size;
-        map = new LinkedHashMap<String,String>((int) Math.ceil(maxSize / 0.75f) + 1, 0.75f, true){
+        map = new LinkedHashMap<String,String>(maxSize+1, 0.25f, true){
             @Override
             protected boolean removeEldestEntry(Map.Entry eldest) {
-                return size() > maxSize;
+                return size() >= maxSize;
             }
         };
     }
