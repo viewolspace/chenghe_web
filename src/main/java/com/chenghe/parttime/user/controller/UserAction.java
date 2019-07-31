@@ -53,9 +53,9 @@ import java.util.UUID;
 @Controller("userAction")
 public class UserAction {
 
-    private LruCache tokenCache = new LruCache(300);
+    private LruCache<String,String > tokenCache = new LruCache<String,String >(300);
 
-    private LruCache phoneCache = new LruCache(300);
+    private LruCache<String,String > phoneCache = new LruCache<String,String >(300);
 
     @Resource
     private IUserService userService;
