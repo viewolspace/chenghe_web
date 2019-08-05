@@ -61,6 +61,9 @@ public class PartTimeVo {
     @ApiModelProperty("宣传图片")
     private String pic;
 
+    @ApiModelProperty("是否认证 0:未认证 1:已认证")
+    private Integer verify;
+
     private Integer status;
 
     private Date sTime;
@@ -267,5 +270,13 @@ public class PartTimeVo {
 
     public void setmTime(Date mTime) {
         this.mTime = mTime;
+    }
+
+    public Integer getVerify() {
+        return verify;
+    }
+
+    public void setVerify(Integer verify) {
+        this.verify = verify;
     }
 }
