@@ -220,8 +220,8 @@ public class PartTimeAction {
     @Produces("text/html;charset=UTF-8")
     @ApiOperation(value = "报名", notes = "", author = "更新于 2019-07-22")
     @ApiResponses(value = {
-            @ApiResponse(code = "0000", message = "请求成功"),
-            @ApiResponse(code = "0001", message = "请求失败")
+            @ApiResponse(code = "0000", message = "请求成功" , response=JoinPonse.class),
+            @ApiResponse(code = "0001", message = "请求失败" , response=JoinPonse.class)
 
     })
     public String joinPartTime(
@@ -235,9 +235,17 @@ public class PartTimeAction {
 
         User user = userService.getUser(userId);
 
+        int flag  = 0;
+
         if (user != null) {
             partTimeService.joinPartTime(userId, id);
+            if(user.getBirthday()==null || "".equals(user.getBirthday()) || user.getDes()==null || "".equals(user.getDes())
+                    || user.getExp()==null || "".equals(user.getExp()) ){
+                flag = 1; //需要完善
+            }
         }
+
+        json.put("flag", flag);
         return json.toJSONString();
     }
 
