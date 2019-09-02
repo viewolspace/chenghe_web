@@ -1,33 +1,18 @@
 package com.chenghe.parttime.parttime.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.chenghe.parttime.pojo.Category;
-import com.chenghe.parttime.pojo.Company;
-import com.chenghe.parttime.pojo.PartTime;
-import com.chenghe.parttime.pojo.User;
-import com.chenghe.parttime.pojo.UserJoin;
-import com.chenghe.parttime.service.ICategoryService;
-import com.chenghe.parttime.service.ICompanyService;
-import com.chenghe.parttime.service.IPartTimeService;
-import com.chenghe.parttime.service.IUserJoinService;
-import com.chenghe.parttime.service.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import com.chenghe.parttime.pojo.*;
+import com.chenghe.parttime.pojo.Contact;
+import com.chenghe.parttime.service.*;
+import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by lenovo on 2019/7/22.
@@ -154,6 +139,30 @@ public class PartTimeAction {
 
         PartTime partTime = partTimeService.getAndStatPartTime(id, userId, "");
 
+        //准备随机联系方式
+        if(partTime.getExt()!=null && !"".equals(partTime.getExt())){
+            List<Contact> list = JSON.parseArray(partTime.getExt(),Contact.class);
+            if(list!=null && list.size()>0){
+                List<Contact> temp_list = new ArrayList<>();
+                if(partTime.getContact()!=null && !partTime.equals("")){
+                    Contact contact = new Contact();
+                    contact.setContact(partTime.getContact());
+                    contact.setContactType(partTime.getContactType());
+                    temp_list.add(contact);
+                }
+                for(Contact contact:list){
+                    if(contact.getContact()!=null && !"".equals(contact.getContact())){
+                        temp_list.add(contact);
+                    }
+                }
+
+                int number = new Random().nextInt(temp_list.size());
+                partTime.setContactType(temp_list.get(number).getContactType());
+                partTime.setContact(temp_list.get(number).getContact());
+
+            }
+        }
+        //随机联系方式结束
         String isJoin = "0"; //未报名
 
         if (userId > 0) {
