@@ -3,6 +3,7 @@ package com.chenghe.parttime.ad.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.Ad;
 import com.chenghe.parttime.service.IAdService;
+import com.chenghe.parttime.service.IAdStatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,10 +14,7 @@ import io.swagger.annotations.Tag;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import java.util.List;
 
 /**
@@ -33,6 +31,9 @@ import java.util.List;
 public class AdAction {
     @Resource
     private IAdService adService;
+
+    @Resource
+    private IAdStatService adStatService;
 
     @GET
     @Path(value = "/queryAdList")
@@ -53,6 +54,34 @@ public class AdAction {
         List<Ad> list = adService.listAd(categoryId);
 
         json.put("result", list);
+
+        return json.toJSONString();
+    }
+
+
+
+    @POST
+    @Path(value = "/adStat")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "广告统计", notes = "", author = "更新于 2019-07-22")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = AdResPonse.class),
+            @ApiResponse(code = "0001", message = "失败", response = AdResPonse.class)
+
+    })
+    public String adStat(@ApiParam(value = "广告id", required = true) @QueryParam("adId") int adId,
+                              @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId) {
+        JSONObject json = new JSONObject();
+
+        json.put("status", "0000");
+
+        json.put("message", "ok");
+
+        if(adId > 0){
+
+            adStatService.userClick(userId,adId);
+
+        }
 
         return json.toJSONString();
     }
