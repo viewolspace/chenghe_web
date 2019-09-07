@@ -144,7 +144,7 @@ public class PartTimeAction {
             List<Contact> list = JSON.parseArray(partTime.getExt(),Contact.class);
             if(list!=null && list.size()>0){
                 List<Contact> temp_list = new ArrayList<>();
-                if(partTime.getContact()!=null && !partTime.equals("")){
+                if(partTime.getContact()!=null && !partTime.getContact().equals("")){
                     Contact contact = new Contact();
                     contact.setContact(partTime.getContact());
                     contact.setContactType(partTime.getContactType());
