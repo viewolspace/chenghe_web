@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import javax.annotation.Resource;
 import javax.ws.rs.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -46,7 +47,8 @@ public class PartTimeAction {
             @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
 
     })
-    public String queryRecommnet(@ApiParam(value = " 1 热门 2 精选", required = true) @QueryParam("recommend") int recommend,
+    public String queryRecommnet(@ApiParam(value = " 1 推荐 2 精选 3 热门", required = true) @QueryParam("recommend") int recommend,
+                                 @ApiParam(value = " 0 正序 1 倒叙") @QueryParam("order") @DefaultValue("0") int order,
                                  @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                                  @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
         JSONObject json = new JSONObject();
@@ -56,6 +58,10 @@ public class PartTimeAction {
         json.put("message", "ok");
 
         List<PartTime> list = partTimeService.listRecommend(recommend, pageIndex, pageSize);
+
+        if(order==1){
+            Collections.reverse(list);
+        }
 
         json.put("result", list);
 
