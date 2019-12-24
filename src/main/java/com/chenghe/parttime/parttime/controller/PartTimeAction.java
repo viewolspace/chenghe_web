@@ -109,6 +109,7 @@ public class PartTimeAction {
 
     })
     public String queryAll(@ApiParam(value = "关键词，可以不传", required = false) @QueryParam("keyWord") String keyWord,
+                           @ApiParam(value = " 1 兼职圈 2 土豆 3 新app") @QueryParam("app") @DefaultValue("0") int app,
                            @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                            @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
         JSONObject json = new JSONObject();
