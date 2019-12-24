@@ -47,7 +47,7 @@ public class PartTimeAction {
             @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
 
     })
-    public String queryRecommnet(@ApiParam(value = " 1 推荐 2 精选 3 热门", required = true) @QueryParam("recommend") int recommend,
+    public String queryRecommnet(@ApiParam(value = " 1 兼职圈-推荐 2 兼职圈-精选 3 兼职圈-热门  4 土豆-推荐 5 土豆-精选 6 土豆-热门 7 新app-推荐 8 新app-精选 9 新app-热门", required = true) @QueryParam("recommend") int recommend,
                                  @ApiParam(value = " 0 正序 1 倒叙") @QueryParam("order") @DefaultValue("0") int order,
                                  @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                                  @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
@@ -109,7 +109,7 @@ public class PartTimeAction {
 
     })
     public String queryAll(@ApiParam(value = "关键词，可以不传", required = false) @QueryParam("keyWord") String keyWord,
-                           @ApiParam(value = " 1 兼职圈 2 土豆 3 新app") @QueryParam("app") @DefaultValue("0") int app,
+                           @ApiParam(value = " 1:兼职圈 2:土豆 3:新app") @QueryParam("app") @DefaultValue("0") int app,
                            @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
                            @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
         JSONObject json = new JSONObject();
@@ -118,7 +118,22 @@ public class PartTimeAction {
 
         json.put("message", "ok");
 
-        List<PartTime> list = partTimeService.listAll(keyWord, pageIndex, pageSize);
+        String recommend = "";
+        switch (app){
+            case 1:
+                recommend="1,2,3";
+                break;
+            case 2:
+                recommend="4,5,6";
+                break;
+            case 3:
+                recommend="7,8,9";
+                break;
+            default:
+                break;
+        }
+
+        List<PartTime> list = partTimeService.listAll(keyWord,recommend,pageIndex,pageSize);
 
         json.put("result", list);
 
