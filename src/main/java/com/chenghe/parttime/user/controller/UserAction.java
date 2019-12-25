@@ -87,6 +87,7 @@ public class UserAction {
 
     })
     public String getRand(@ApiParam(value = "手机号码", required = true) @QueryParam("phone") String phone,
+                          @ApiParam(value = " 1:兼职圈 2:土豆 3:新app") @QueryParam("app") @DefaultValue("1") int app,
                           @ApiParam(value = "token", required = true) @HeaderParam("token") String token) {
 
         JSONObject json = new JSONObject();
@@ -105,10 +106,19 @@ public class UserAction {
         tokenCache.remove(phone);
 
 
+
+
         String random = SecurityCode.getSimpleSecurityCode();
 
+        //兼职圈
+        String sign = "158304";
+        String skin = "88913";
+//        switch (app){
+//            case 2:
+//        }
+
         ISmsService smsService = new QingSmsServiceImpl();
-        smsService.sendRand(phone,random);
+        smsService.sendRand(phone,random,sign,skin);
 
         json.put("status", "0000");
 
