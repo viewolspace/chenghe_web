@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.*;
 import com.chenghe.parttime.pojo.Contact;
 import com.chenghe.parttime.service.*;
+import com.youguu.core.logging.Log;
+import com.youguu.core.logging.LogFactory;
 import io.swagger.annotations.*;
 import org.springframework.stereotype.Controller;
 
@@ -37,6 +39,8 @@ public class PartTimeAction {
     private IUserService userService;
     @Resource
     private ICompanyService companyService;
+
+    private Log log = LogFactory.getLog(PartTimeAction.class);
 
     @GET
     @Path(value = "/queryRecommnet")
@@ -306,6 +310,33 @@ public class PartTimeAction {
         List<PartTime> list = partTimeService.listMyjoin(userId, pageIndex, pageSize);
 
         json.put("result", list);
+
+        return json.toJSONString();
+    }
+
+
+
+
+    @GET
+    @Path(value = "/question")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "意见反馈", notes = "", author = "更新于 2019-07-22")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+            @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
+
+    })
+    public String question(@ApiParam(value = "用户id", required = true) @HeaderParam("userId") int userId,
+                                  @ApiParam(value = "问题描述", required = true) @FormParam("question") String question,
+                                  @ApiParam(value = "1 兼职圈  2 土豆 3 彩虹", required = true) @FormParam("app") int app) {
+        JSONObject json = new JSONObject();
+
+        log.info("问题:{} , app:{} , uid:{}",question,app,userId);
+
+        json.put("status", "0000");
+
+        json.put("message", "感谢您的反馈，我们会尽快处理！");
+
 
         return json.toJSONString();
     }
