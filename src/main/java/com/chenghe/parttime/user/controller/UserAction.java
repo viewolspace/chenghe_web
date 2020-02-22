@@ -10,6 +10,7 @@ import com.chenghe.parttime.service.IIdfaService;
 import com.chenghe.parttime.service.IUserService;
 import com.chenghe.parttime.sms.ISmsService;
 import com.chenghe.parttime.sms.QingSmsServiceImpl;
+import com.chenghe.parttime.sms.YtxSmsServiceImpl;
 import com.chenghe.parttime.util.LruCache;
 import com.chenghe.parttime.util.SecurityCode;
 import com.youguu.core.util.PropertiesUtil;
@@ -111,14 +112,23 @@ public class UserAction {
         String random = SecurityCode.getSimpleSecurityCode();
 
         //兼职圈
-        String sign = "158304";
-        String skin = "88913";
+        String sign = "500391";
+        String skin = "900586";
+        if(app==2){
+            sign = "500392";
+            skin = "900586";
+        }
 //        switch (app){
 //            case 2:
 //        }
+        if(app==3){//彩虹的短信通道不一致
+            ISmsService smsService = new YtxSmsServiceImpl();
+            smsService.sendRand(phone,random);
+        }else{
+            ISmsService smsService = new QingSmsServiceImpl();
+            smsService.sendRand(phone,random,sign,skin);
+        }
 
-        ISmsService smsService = new QingSmsServiceImpl();
-        smsService.sendRand(phone,random,sign,skin);
 
         json.put("status", "0000");
 

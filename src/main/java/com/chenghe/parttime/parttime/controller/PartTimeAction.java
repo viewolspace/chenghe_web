@@ -241,11 +241,10 @@ public class PartTimeAction {
 
         json.put("message", "ok");
 
-        User user = userService.getUser(userId);
+//        User user = userService.getUser(userId);
 
-        if (user != null) {
-            partTimeService.copyPartTime(userId, id);
-        }
+        partTimeService.copyPartTime(userId, id);
+
         return json.toJSONString();
     }
 
@@ -272,8 +271,10 @@ public class PartTimeAction {
 
         int flag  = 0;
 
+        partTimeService.joinPartTime(userId, id);
+
         if (user != null) {
-            partTimeService.joinPartTime(userId, id);
+
             if(user.getBirthday()==null || "".equals(user.getBirthday()) || user.getDes()==null || "".equals(user.getDes())
                     || user.getExp()==null || "".equals(user.getExp()) ){
                 flag = 1; //需要完善
