@@ -88,7 +88,7 @@ public class UserAction {
 
     })
     public String getRand(@ApiParam(value = "手机号码", required = true) @QueryParam("phone") String phone,
-                          @ApiParam(value = " 1:兼职圈 2:土豆 3:新app") @QueryParam("app") @DefaultValue("1") int app,
+                          @ApiParam(value = " 1:兼职圈 2:土豆 3:彩虹 4:暖阳兼职 6:松鼠兼职 5:蜜桔兼职 7:快乐兼职 8:点滴兼职") @QueryParam("app") @DefaultValue("1") int app,
                           @ApiParam(value = "token", required = true) @HeaderParam("token") String token) {
 
         JSONObject json = new JSONObject();
@@ -121,8 +121,8 @@ public class UserAction {
 //        switch (app){
 //            case 2:
 //        }
-        if(app==3){//彩虹的短信通道不一致
-            ISmsService smsService = new YtxSmsServiceImpl();
+        if(app>=3){//彩虹的短信通道不一致
+            ISmsService smsService = new YtxSmsServiceImpl(app);
             smsService.sendRand(phone,random);
         }else{
             ISmsService smsService = new QingSmsServiceImpl();
