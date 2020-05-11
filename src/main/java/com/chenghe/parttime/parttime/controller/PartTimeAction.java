@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import javax.ws.rs.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by lenovo on 2019/7/22.
@@ -29,6 +26,8 @@ import java.util.Random;
 @Path(value = "/partTime")
 @Controller("partTimeAction")
 public class PartTimeAction {
+    @Resource
+    private ISysUserService sysUserService;
     @Resource
     private IPartTimeService partTimeService;
     @Resource
@@ -217,7 +216,17 @@ public class PartTimeAction {
             companyVo.setWx(company.getWx());
             companyVo.setStar(company.getStar());
         }
+
         json.put("company", companyVo);
+
+        Map<Integer,Integer> map = sysUserService.getMap();
+        if(map.containsKey(partTime.getCompanyId())){
+            json.put("customerId", map.get(partTime.getCompanyId()));
+        }else{
+            json.put("customerId", 0);
+        }
+
+
 
         return json.toJSONString();
     }

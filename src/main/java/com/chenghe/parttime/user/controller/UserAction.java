@@ -7,6 +7,7 @@ package com.chenghe.parttime.user.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.User;
 import com.chenghe.parttime.service.IIdfaService;
+import com.chenghe.parttime.service.ISysUserService;
 import com.chenghe.parttime.service.IUserService;
 import com.chenghe.parttime.sms.ISmsService;
 import com.chenghe.parttime.sms.QingSmsServiceImpl;
@@ -51,6 +52,42 @@ public class UserAction {
     @Resource
     private IIdfaService iIdfaService;
 
+    @Resource
+    private ISysUserService sysUserService;
+
+
+    @GET
+    @Path(value = "/getAppQQ")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "获取token", notes = "", author = "更新于 2019-07-22")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = TokenResPonse.class),
+            @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
+
+    })
+    public String getAppQQ(@ApiParam(value = "应用编号", required = true) @QueryParam("app") String app) {
+
+
+        String appQQ = sysUserService.getRemark(app);
+
+        if(appQQ==null || "".equals(appQQ)){
+            appQQ = "2206388328";
+        }
+
+        JSONObject json = new JSONObject();
+
+        json.put("status", "0000");
+
+        json.put("message", "ok");
+
+        json.put("qq", appQQ);
+
+        json.put("showMsg", "商务合作请联系QQ：" + appQQ);
+
+
+
+        return json.toJSONString();
+    }
 
     @GET
     @Path(value = "/getToken")
