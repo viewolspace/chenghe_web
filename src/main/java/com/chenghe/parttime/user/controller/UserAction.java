@@ -518,7 +518,7 @@ public class UserAction {
             @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
 
     })
-    public String getAppQQ(@ApiParam(value = "应用编号", required = true) @QueryParam("app") int app,
+    public String getReviewStatus(@ApiParam(value = "应用编号", required = true) @QueryParam("app") int app,
                            @ApiParam(value = "渠道名称", required = true) @QueryParam("channel") String channel) {
 
 
