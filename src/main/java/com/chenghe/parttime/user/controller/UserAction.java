@@ -508,6 +508,38 @@ public class UserAction {
         return json.toJSONString();
     }
 
+
+    @GET
+    @Path(value = "/getReviewStatus")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "获取渠道是否显示跳转第三方 1 不显示跳转  0 显示跳转", notes = "", author = "更新于 2019-07-22")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = TokenResPonse.class),
+            @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
+
+    })
+    public String getAppQQ(@ApiParam(value = "应用编号", required = true) @QueryParam("app") int app,
+                           @ApiParam(value = "渠道名称", required = true) @QueryParam("channel") String channel) {
+
+
+        int status = 0;
+
+        if(app==6 && "vivo".equals(channel)){
+            status = 1;
+        }
+
+        JSONObject json = new JSONObject();
+
+        json.put("status", "0000");
+
+        json.put("message", "ok");
+
+        json.put("status", status);
+
+
+        return json.toJSONString();
+    }
+
     public static void main(String[] args) {
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid.toString());

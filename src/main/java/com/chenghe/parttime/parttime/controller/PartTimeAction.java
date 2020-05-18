@@ -132,6 +132,9 @@ public class PartTimeAction {
             case 3:
                 recommend="7,8,9";
                 break;
+            case 6:
+                recommend="15,16";
+                break;
             default:
                 break;
         }
