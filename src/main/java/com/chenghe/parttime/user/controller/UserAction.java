@@ -512,7 +512,7 @@ public class UserAction {
     @GET
     @Path(value = "/getReviewStatus")
     @Produces("text/html;charset=UTF-8")
-    @ApiOperation(value = "获取渠道是否显示跳转第三方 1 不显示跳转  0 显示跳转", notes = "", author = "更新于 2019-07-22")
+    @ApiOperation(value = "获取渠道是否显示跳转第三方   1 显示跳转   其他都不显示", notes = "", author = "更新于 2019-07-22")
     @ApiResponses(value = {
             @ApiResponse(code = "0000", message = "请求成功", response = TokenResPonse.class),
             @ApiResponse(code = "0001", message = "失败", response = TokenResPonse.class)
@@ -522,10 +522,10 @@ public class UserAction {
                            @ApiParam(value = "渠道名称", required = true) @QueryParam("channel") String channel) {
 
 
-        int status = 0;
+        int status = 1;
 
         if(app==6 && "vivo".equals(channel)){
-            status = 1;
+            status = 2;
         }
 
         JSONObject json = new JSONObject();
