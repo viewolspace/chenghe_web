@@ -185,6 +185,7 @@ public class PartTimeAction {
                 }
 
                 int number = new Random().nextInt(temp_list.size());
+                log.info("parttime id:{} ,companyId:{} ,this number:{}",partTime.getId(),partTime.getCompanyId(),temp_list.get(number).getContactType());
                 partTime.setContactType(temp_list.get(number).getContactType());
                 partTime.setContact(temp_list.get(number).getContact());
 
