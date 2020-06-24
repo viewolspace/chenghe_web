@@ -232,7 +232,7 @@ public class PartTimeAction {
 
         fac = fac + 1;
 
-        json.put("customerId", fac);
+        json.put("customerId", times);
 
 //        Map<Integer,Integer> map = sysUserService.getMap();
 //        if(map.containsKey(partTime.getCompanyId())){
