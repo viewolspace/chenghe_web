@@ -146,6 +146,7 @@ public class PartTimeAction {
         return json.toJSONString();
     }
 
+    private int fac = 0;
 
     @GET
     @Path(value = "/getPartTime")
@@ -223,12 +224,22 @@ public class PartTimeAction {
 
         json.put("company", companyVo);
 
-        Map<Integer,Integer> map = sysUserService.getMap();
-        if(map.containsKey(partTime.getCompanyId())){
-            json.put("customerId", map.get(partTime.getCompanyId()));
-        }else{
-            json.put("customerId", 0);
+        long times = System.currentTimeMillis();
+        if(fac>=10){
+            fac = 0;
         }
+        times=times*10 + fac;
+
+        fac = fac + 1;
+
+        json.put("customerId", fac);
+
+//        Map<Integer,Integer> map = sysUserService.getMap();
+//        if(map.containsKey(partTime.getCompanyId())){
+//            json.put("customerId", map.get(partTime.getCompanyId()));
+//        }else{
+//            json.put("customerId", 0);
+//        }
 
 
 

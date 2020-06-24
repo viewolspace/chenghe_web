@@ -524,7 +524,7 @@ public class UserAction {
 
         int status = 1;
 
-        if(app==7 && "vivo".equals(channel)){
+        if(app==4 && "vivo".equals(channel)){
             status = 2;
         }
 
