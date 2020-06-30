@@ -38,7 +38,8 @@ public class PartTimeAction {
     private IUserService userService;
     @Resource
     private ICompanyService companyService;
-
+    @Resource
+    private IChannelViewService channelViewService;
     private Log log = LogFactory.getLog(PartTimeAction.class);
 
     @GET
@@ -159,12 +160,16 @@ public class PartTimeAction {
     })
     public String getPartTime(
             @ApiParam(value = "id", required = true) @QueryParam("id") int id,
-            @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId) {
+            @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId,
+            @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
+            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("0") String channelNo) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
 
         json.put("message", "ok");
+
+        log.info("appId:{} channelNo:{}",appId,channelNo);
 
         PartTime partTime = partTimeService.getAndStatPartTime(id, userId, "");
 
@@ -193,6 +198,13 @@ public class PartTimeAction {
             }
         }
         //随机联系方式结束
+
+        /*************看当前是否是审核中*************/
+        String phone = this.getPhone(appId, channelNo);
+        if(phone!=null){
+            partTime.setContactType(3);
+            partTime.setContact(phone);//手机号码
+        }
         String isJoin = "0"; //未报名
 
         if (userId > 0) {
@@ -244,6 +256,25 @@ public class PartTimeAction {
 
 
         return json.toJSONString();
+    }
+
+    private String getPhone(int appId,String channelNo){
+        ChannelView channelView = channelViewService.getChannelView();
+        if(channelView!=null){
+            String appIds = channelView.getAppIds();
+            if((appIds+",").indexOf(appId+",")>=0){
+                String channels = channelView.getChannelNos() + ",";
+                if(channels.indexOf(channelNo+",")>=0){
+                    String phones = channelView.getPhoneNums();
+                    String[] phoneArray = phones.split(",");
+                    if(phoneArray!=null && phoneArray.length>0){
+                        int number = new Random().nextInt(phoneArray.length);
+                        return phoneArray[number];
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 
