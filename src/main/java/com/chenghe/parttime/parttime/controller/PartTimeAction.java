@@ -162,7 +162,7 @@ public class PartTimeAction {
             @ApiParam(value = "id", required = true) @QueryParam("id") int id,
             @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId,
             @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
-            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("0") String channelNo) {
+            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -259,6 +259,7 @@ public class PartTimeAction {
     }
 
     private String getPhone(int appId,String channelNo){
+        if(channelNo==null || "".endsWith(channelNo)) return null;
         ChannelView channelView = channelViewService.getChannelView();
         if(channelView!=null){
             String appIds = channelView.getAppIds();

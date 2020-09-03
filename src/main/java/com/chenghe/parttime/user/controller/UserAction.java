@@ -524,9 +524,9 @@ public class UserAction {
 
         int status = 1;
 
-        if(app==4 && "vivo".equals(channel)){
-            status = 2;
-        }
+//        if(app==4 && "vivo".equals(channel)){
+//            status = 2;
+//        }
 
         JSONObject json = new JSONObject();
 
