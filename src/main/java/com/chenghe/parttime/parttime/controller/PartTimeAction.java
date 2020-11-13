@@ -40,6 +40,9 @@ public class PartTimeAction {
     private ICompanyService companyService;
     @Resource
     private IChannelViewService channelViewService;
+
+
+
     private Log log = LogFactory.getLog(PartTimeAction.class);
 
     @GET
@@ -54,14 +57,32 @@ public class PartTimeAction {
     public String queryRecommnet(@ApiParam(value = " 1 兼职圈-推荐 2 兼职圈-精选 3 兼职圈-热门  4 土豆-推荐 5 土豆-精选 6 土豆-热门 7 新app-推荐 8 新app-精选 9 新app-热门", required = true) @QueryParam("recommend") int recommend,
                                  @ApiParam(value = " 0 正序 1 倒叙") @QueryParam("order") @DefaultValue("0") int order,
                                  @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
-                                 @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
+                                 @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize,
+                                 @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
+                                 @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
+                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
 
         json.put("message", "ok");
 
+        //----------------处理审核--------------------
+        boolean isView = channelViewService.isView(String.valueOf(appId),version,channelNo);
+        if(isView){
+            try{
+                recommend = Integer.parseInt(getAllId(appId,isView));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        //------------------------------------
+
         List<PartTime> list = partTimeService.listRecommend(recommend, pageIndex, pageSize);
+
+        if(isView){
+            list = this.randomList(list);
+        }
 
         if(order==1){
             Collections.reverse(list);
@@ -115,29 +136,24 @@ public class PartTimeAction {
     public String queryAll(@ApiParam(value = "关键词，可以不传", required = false) @QueryParam("keyWord") String keyWord,
                            @ApiParam(value = " 1:兼职圈 2:土豆 3:新app") @QueryParam("app") @DefaultValue("0") int app,
                            @ApiParam(value = "第几页", required = true) @QueryParam("pageIndex") int pageIndex,
-                           @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize) {
+                           @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize,
+                           @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
+                           @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
+                           @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
 
         json.put("message", "ok");
 
+        boolean isView = channelViewService.isView(String.valueOf(appId),version,channelNo);
+
         String recommend = "";
-        switch (app){
-            case 1:
-                recommend="1,2,3";
-                break;
-            case 2:
-                recommend="4,5,6";
-                break;
-            case 3:
-                recommend="7,8,9";
-                break;
-            case 6:
-                recommend="15,16";
-                break;
-            default:
-                break;
+
+        try{
+            recommend = getAllId(appId,isView);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         List<PartTime> list = partTimeService.listAll(keyWord,recommend,pageIndex,pageSize);
@@ -162,7 +178,8 @@ public class PartTimeAction {
             @ApiParam(value = "id", required = true) @QueryParam("id") int id,
             @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId,
             @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
-            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo) {
+            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
+            @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -200,11 +217,13 @@ public class PartTimeAction {
         //随机联系方式结束
 
         /*************看当前是否是审核中*************/
-        String phone = this.getPhone(appId, channelNo);
-        if(phone!=null){
-            partTime.setContactType(3);
-            partTime.setContact(phone);//手机号码
-        }
+
+//        String phone = this.getPhone(appId, channelNo);
+//        if(phone!=null){
+//            partTime.setContactType(3);
+//            partTime.setContact(phone);//手机号码
+//        }
+        /*************看当前是否是审核中*************/
         String isJoin = "0"; //未报名
 
         if (userId > 0) {
@@ -258,25 +277,25 @@ public class PartTimeAction {
         return json.toJSONString();
     }
 
-    private String getPhone(int appId,String channelNo){
-        if(channelNo==null || "".endsWith(channelNo)) return null;
-        ChannelView channelView = channelViewService.getChannelView();
-        if(channelView!=null){
-            String appIds = channelView.getAppIds();
-            if((appIds+",").indexOf(appId+",")>=0){
-                String channels = channelView.getChannelNos() + ",";
-                if(channels.indexOf(channelNo+",")>=0){
-                    String phones = channelView.getPhoneNums();
-                    String[] phoneArray = phones.split(",");
-                    if(phoneArray!=null && phoneArray.length>0){
-                        int number = new Random().nextInt(phoneArray.length);
-                        return phoneArray[number];
-                    }
-                }
-            }
-        }
-        return null;
-    }
+//    private String getPhone(int appId,String channelNo){
+//        if(channelNo==null || "".endsWith(channelNo)) return null;
+//        ChannelView channelView = channelViewService.getChannelView();
+//        if(channelView!=null){
+//            String appIds = channelView.getAppIds();
+//            if((appIds+",").indexOf(appId+",")>=0){
+//                String channels = channelView.getChannelNos() + ",";
+//                if(channels.indexOf(channelNo+",")>=0){
+//                    String phones = channelView.getPhoneNums();
+//                    String[] phoneArray = phones.split(",");
+//                    if(phoneArray!=null && phoneArray.length>0){
+//                        int number = new Random().nextInt(phoneArray.length);
+//                        return phoneArray[number];
+//                    }
+//                }
+//            }
+//        }
+//        return null;
+//    }
 
 
     @GET
@@ -397,4 +416,83 @@ public class PartTimeAction {
 
         return json.toJSONString();
     }
+
+
+    @GET
+    @Path(value = "/queryByIds")
+    @Produces("text/html;charset=UTF-8")
+    @ApiOperation(value = "通过职位id查询多个职位", notes = "", author = "更新于 2020")
+    @ApiResponses(value = {
+            @ApiResponse(code = "0000", message = "请求成功", response = PartTimeListResPonse.class),
+            @ApiResponse(code = "0001", message = "请求失败", response = PartTimeListResPonse.class)
+
+    })
+    public String queryByIds(@ApiParam(value = " 多个使用 , 分隔", required = true) @QueryParam("ids") String ids,
+                                 @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
+                                 @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
+                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+        JSONObject json = new JSONObject();
+
+        json.put("status", "0000");
+
+        json.put("message", "ok");
+
+        String[] idArrays = ids.split(",");
+        List<Integer> idList = new ArrayList<>();
+        if(idArrays.length>0){
+            for(String str:idArrays){
+                try {
+                    idList.add(Integer.parseInt(str));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        Integer[] a = new Integer[idList.size()];
+
+        List<PartTime> list = partTimeService.queryByIds(idList.toArray(a));
+
+        json.put("result", list);
+
+        return json.toJSONString();
+    }
+
+
+    private String getAllId(int appId,boolean isView){
+        String menu = "";
+        List<SysDictionary> list = sysUserService.selectMenu(appId);
+
+        for (SysDictionary sysDictionary:list){
+            if(sysDictionary.getName().indexOf("审核")>=0 && isView){//审核状态
+                menu = sysDictionary.getValue();
+            }else{
+                if(sysDictionary.getName().indexOf("审核")<0){
+                    menu += sysDictionary.getValue() + ",";
+                }
+            }
+        }
+
+        if(menu.endsWith(",")){
+            menu.substring(0,menu.length()-1);
+        }
+
+        return menu;
+    }
+
+
+    private List<PartTime> randomList(List<PartTime> list ){
+        List<PartTime> result = new ArrayList<>();
+        if(list!=null && list.size()>0){
+            Collections.shuffle(list);
+            Random r = new Random();
+            int len = 5;
+            if(r.nextInt(100) > 50){
+                len =6;
+            }
+            result = list.subList(0,len>list.size()?list.size():len);
+        }
+        return result;
+
+    }
+
 }

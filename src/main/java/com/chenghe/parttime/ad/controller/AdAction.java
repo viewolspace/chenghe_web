@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.chenghe.parttime.pojo.Ad;
 import com.chenghe.parttime.service.IAdService;
 import com.chenghe.parttime.service.IAdStatService;
+import com.chenghe.parttime.service.IChannelViewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,6 +36,9 @@ public class AdAction {
     @Resource
     private IAdStatService adStatService;
 
+    @Resource
+    private IChannelViewService channelViewService;
+
     @GET
     @Path(value = "/queryAdList")
     @Produces("text/html;charset=UTF-8")
@@ -44,7 +48,10 @@ public class AdAction {
             @ApiResponse(code = "0001", message = "失败", response = AdResPonse.class)
 
     })
-    public String queryAdList(@ApiParam(value = "分类id", required = true) @QueryParam("categoryId") String categoryId) {
+    public String queryAdList(@ApiParam(value = "分类id", required = true) @QueryParam("categoryId") String categoryId,
+                              @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
+                              @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
+                              @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -53,6 +60,15 @@ public class AdAction {
 
         List<Ad> list = adService.listAd(categoryId);
 
+        //----------------处理审核--------------------
+        boolean isView = channelViewService.isView(String.valueOf(appId),version,channelNo);
+
+        if(isView){
+            for(Ad ad:list){
+                ad.setUrl(ad.getViewUrl());
+            }
+        }
+        //------------------------------------
         json.put("result", list);
 
         return json.toJSONString();
