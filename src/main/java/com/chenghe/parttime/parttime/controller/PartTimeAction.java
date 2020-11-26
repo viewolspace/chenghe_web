@@ -473,7 +473,7 @@ public class PartTimeAction {
         }
 
         if(menu.endsWith(",")){
-            menu.substring(0,menu.length()-1);
+            menu = menu.substring(0,menu.length()-1);
         }
 
         return menu;
