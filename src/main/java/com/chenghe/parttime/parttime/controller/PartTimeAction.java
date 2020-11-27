@@ -60,7 +60,7 @@ public class PartTimeAction {
                                  @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize,
                                  @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
                                  @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
-                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("1") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -139,7 +139,7 @@ public class PartTimeAction {
                            @ApiParam(value = "页数", required = true) @QueryParam("pageSize") int pageSize,
                            @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
                            @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
-                           @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+                           @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("1") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -179,7 +179,7 @@ public class PartTimeAction {
             @ApiParam(value = "userId") @HeaderParam("userId") @DefaultValue("0") int userId,
             @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
             @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
-            @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+            @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("1") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
@@ -430,7 +430,7 @@ public class PartTimeAction {
     public String queryByIds(@ApiParam(value = " 多个使用 , 分隔", required = true) @QueryParam("ids") String ids,
                                  @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
                                  @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
-                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+                                 @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("1") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");

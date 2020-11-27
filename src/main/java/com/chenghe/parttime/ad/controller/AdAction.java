@@ -51,7 +51,7 @@ public class AdAction {
     public String queryAdList(@ApiParam(value = "分类id", required = true) @QueryParam("categoryId") String categoryId,
                               @ApiParam(value = "appId") @HeaderParam("appId") @DefaultValue("1") int appId,
                               @ApiParam(value = "channelNo") @HeaderParam("channelNo") @DefaultValue("") String channelNo,
-                              @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("") String version) {
+                              @ApiParam(value = "version") @HeaderParam("version") @DefaultValue("1") String version) {
         JSONObject json = new JSONObject();
 
         json.put("status", "0000");
