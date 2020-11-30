@@ -87,9 +87,10 @@ public class PartTimeAction {
         if(order==1){
             Collections.reverse(list);
         }
-
         json.put("result", list);
-
+        if(isView && pageIndex>1){
+            json.put("result", new ArrayList<>());
+        }
         return json.toJSONString();
     }
 
